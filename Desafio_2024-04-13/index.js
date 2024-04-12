@@ -1,9 +1,10 @@
+// Inicio el file system
+const fs = require("fs"); 
 
-const fs = require("fs"); // Inicio el file system
-
-
-let products = []; // Creo un array vacío para guardar los productos
-let pathFile = "./data/products.json"; // Creo una variable con la ruta del archivo donde se guardan los productos
+// Creo un array vacío para guardar los productos
+let products = []; 
+// Creo una variable con la ruta del archivo donde se guardan los productos
+let pathFile = "./data/products.json"; 
 
 // Creo una función asincrónica que recibe los datos del producto y los guarda en el archivo
 const addProduct = async (title, description, price, thumbnail, code, stock) => { 
@@ -38,31 +39,90 @@ const addProduct = async (title, description, price, thumbnail, code, stock) => 
 };
 
 // Creo una función que lee el archivo y muestra los productos
-const getProducts = () => { 
+const getProducts = async () => { 
+    const data = await fs.promises.readFile(pathFile, 'utf-8');
+    products = JSON.parse(data);
     console.log(products);
     return products;
-};
+
 
 // Creo una función que recibe un id y muestra el producto con ese id si existe
-const getProductById = (id) => {
+const getProductById = async (id) => {
+    const data = await fs.promises.readFile(pathFile, 'utf-8');
+    products = JSON.parse(data);
     const product = products.find((product) => product.id === id);
     if (!product) {
         console.log(`No se encontró el producto con el id ${id}`);
         return;
     }
 
-    console.log(product);
-    return product;
+    console.log("El producto con ID ",id," es: ",product);
 };
 
 
+// Creo una funcion para actualizar un producto
+const updateProduct = async (id, dataProduct) => {
 
-addProduct("Producto 5", "el quinto producto", 899, "http://www.google.com", "ADF126");
-addProduct("Producto 1", "el primer producto", 299, "http://www.google.com", "ADF123", 10);
-addProduct("Producto 2", "el segundo producto", 899, "http://www.google.com", "ADF124", 10);
-addProduct("Producto 3", "el tercer producto", 899, "http://www.google.com", "ADF124", 10);
-addProduct("Producto 4", "el cuarto producto", 899, "http://www.google.com", "ADF125", 10);
+    await getProductById();
+    const product = products.find((product) => product.id === id);
+    if (!product) {
+        console.log(`No se encontró el producto con el id ${id}`);
+        return;
+    }
 
-getProducts();
+    const index = products.findIndex(product => product.id === id);
+    products[index] = { 
+        ...products[index], // hago una copia de las propiedades del producto 
+        ...dataProduct // actualizo las propiedades que me pasan por parámetro
+    };
 
-getProductById(4);
+    // Guardo el array de productos en el archivo sobreescrbiendo el archivo
+    await fs.promises.writeFile(pathFile, JSON.stringify(products));
+}
+
+
+
+
+// Agrego productos ficticios al JSON
+// addProduct(
+//     "Producto 5",
+//     "el quinto producto",
+//     899,
+//     "http://www.google.com",
+//     "ABC1",
+//     10    
+// );
+// addProduct(
+//     "Producto 6",
+//     "el sexto producto",
+//     999,
+//     "http://www.mercadolibre.com",
+//     "ABC2",
+//     10    
+// );  
+// addProduct(
+//     "Producto 7",
+//     "el septimo producto",
+//     1099,
+//     "http://www.amazon.com",
+//     "ABC3",
+//     10    
+// );
+// addProduct(
+//     "Producto 9",
+//     "el noveno producto",
+//     999,
+//     "http://www.mercadolibre.com",
+//     "ABC9",
+//     20    
+// );
+
+
+// Leo los productos
+// getProducts();
+
+// Busco un producto por id
+getProductById(3);
+
+// Actualizo un producto
+updateProduct(2, { title: "Producto 3 actualizado", price: 1000 });
