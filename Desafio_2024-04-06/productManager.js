@@ -77,4 +77,4 @@ addProduct(
 // Mostrando la lista de productos 
 getProducts();
 // Mostrando el producto con id 2
-getProductById(5);
+getProductById(6);
