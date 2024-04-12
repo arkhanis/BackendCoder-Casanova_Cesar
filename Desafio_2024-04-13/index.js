@@ -8,6 +8,16 @@ let pathFile = "./data/products.json";
 
 // Creo una función asincrónica que recibe los datos del producto y los guarda en el archivo
 const addProduct = async (title, description, price, thumbnail, code, stock) => { 
+    // Leo el archivo y guardo los productos en la variable "products"
+    let data = await fs.promises.readFile(pathFile, 'utf-8');
+    let products;
+    try {
+        products = JSON.parse(data);
+    } catch (error) {
+        // If an error occurred while parsing, initialize products as an empty array
+        products = [];
+    }
+
     const newProduct = {
         id: products.length + 1,
         title,
@@ -32,7 +42,7 @@ const addProduct = async (title, description, price, thumbnail, code, stock) => 
     }
 
     // Agrego el producto al array de productos
-    products.push(newProduct); 
+    products.push(newProduct);  
 
     // Guardo el array de productos en el archivo
     await fs.promises.writeFile(pathFile, JSON.stringify(products)); 
@@ -40,11 +50,17 @@ const addProduct = async (title, description, price, thumbnail, code, stock) => 
 
 // Creo una función que lee el archivo y muestra los productos
 const getProducts = async () => { 
-    const data = await fs.promises.readFile(pathFile, 'utf-8');
-    products = JSON.parse(data);
+    let data = await fs.promises.readFile(pathFile, 'utf-8');
+    let products;
+    try {
+        products = JSON.parse(data);
+    } catch (error) {
+        // If an error occurred while parsing, initialize products as an empty array
+        products = [];
+    }
     console.log(products);
     return products;
-
+};
 
 // Creo una función que recibe un id y muestra el producto con ese id si existe
 const getProductById = async (id) => {
@@ -63,7 +79,16 @@ const getProductById = async (id) => {
 // Creo una funcion para actualizar un producto
 const updateProduct = async (id, dataProduct) => {
 
-    await getProductById();
+    // Leo el archivo y guardo los productos en la variable "products"
+    let data = await fs.promises.readFile(pathFile, 'utf-8');
+    let products;
+    try {
+        products = JSON.parse(data);
+    } catch (error) {
+        // Si se produjo un error durante el análisis, inicialice los productos como una matriz vacía
+        products = [];
+    }
+
     const product = products.find((product) => product.id === id);
     if (!product) {
         console.log(`No se encontró el producto con el id ${id}`);
@@ -78,9 +103,32 @@ const updateProduct = async (id, dataProduct) => {
 
     // Guardo el array de productos en el archivo sobreescrbiendo el archivo
     await fs.promises.writeFile(pathFile, JSON.stringify(products));
-}
+};
 
 
+const deleteProduct = async (id) => {
+    // Leo el archivo y guardo los productos en la variable "products"
+    let data = await fs.promises.readFile(pathFile, 'utf-8');
+    let products;
+    try {
+        products = JSON.parse(data);
+    } catch (error) {
+        // If an error occurred while parsing, initialize products as an empty array
+        products = [];
+    }
+
+    const index = products.findIndex(product => product.id === id);
+    if (index === -1) {
+        console.log(`No se encontró el producto con el id ${id}`);
+        return;
+    }
+
+    // Elimino el producto del array
+    products.splice(index, 1);
+
+    // Guardo el array de productos en el archivo
+    await fs.promises.writeFile(pathFile, JSON.stringify(products));
+};
 
 
 // Agrego productos ficticios al JSON
@@ -119,10 +167,19 @@ const updateProduct = async (id, dataProduct) => {
 
 
 // Leo los productos
-// getProducts();
+getProducts();
 
 // Busco un producto por id
-getProductById(3);
+// getProductById(3);
 
 // Actualizo un producto
-updateProduct(2, { title: "Producto 3 actualizado", price: 1000 });
+// updateProduct(
+//     2, 
+//     { 
+//         title: "Producto 2 editado", 
+//         price: 4000 
+//     });
+
+
+// Elimino un producto
+// deleteProduct(1);
