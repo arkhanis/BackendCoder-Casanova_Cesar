@@ -6,7 +6,7 @@ import notesManager from "./data/fs/notes.fs.js";
 const app = express();
 
 //para inicialiazar la app de express necesito configurar:
-const port = 8080;
+const port = 8081;
 const ready = console.log("server ready on port " + port);
 
 //para inicializar el servidor
