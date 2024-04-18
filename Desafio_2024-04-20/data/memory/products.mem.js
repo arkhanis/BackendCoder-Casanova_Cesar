@@ -1,24 +1,9 @@
-import fs from "fs";
-import crypto from "crypto";
+const fs = require("fs");
+const crypto = require("crypto");
 
 class ProductManager {
     constructor() {
-        this.path = "./data/fs/files/products.json";
-        this.init();
-    }
-    init() {
-        try {
-            const exists = fs.existsSync(this.path);
-            if (!exists) {
-                const stringData = JSON.stringify([], null, 2);
-                fs.writeFileSync(this.path, stringData);
-                console.log("file created!");
-            } else {
-                console.log("fs connected!");
-            }
-        } catch (error) {
-            throw error;
-        }
+        this.products = []
     }
     async create(data) {
         try {
@@ -31,32 +16,23 @@ class ProductManager {
                     category: data.category || "to do",
                     date: new Date(),
                 };
-                let all = await fs.promises.readFile(this.path, "utf-8");
-                all = JSON.parse(all);
-                all.push(product);
-                all = JSON.stringify(all, null, 2);
-                await fs.promises.writeFile(this.path, all);
+                this.products.push(product);
                 return product;
             }
         } catch (error) {
             throw error;
         }
     }
-    async read(category) {
+    async read() {
         try {
-            let all = await fs.promises.readFile(this.path, "utf-8");
-            all = JSON.parse(all);
-            category && (all = all.filter((each) => each.category === category));
-            return all;
+            return this.products;
         } catch (error) {
             throw error;
         }
     }
     async readOne(id) {
         try {
-            let all = await fs.promises.readFile(this.path, "utf-8");
-            all = JSON.parse(all);
-            let product = all.find((each) => each.id === id);
+            let product = this.products.find((each) => each.id === id);
             return product;
         } catch (error) {
             throw error;
@@ -64,29 +40,22 @@ class ProductManager {
     }
     async update(id, data) {
         try {
-            let all = await this.read();
-            let one = all.find((each) => each.id === id);
-            if (one) {
+            let product = this.products.find((each) => each.id === id);
+            if (product) {
                 for (let prop in data) {
-                    one[prop] = data[prop];
+                    product[prop] = data[prop];
                 }
-                all = JSON.stringify(all, null, 2);
-                await fs.promises.writeFile(this.path, all);
             }
-            return one;
+            return product;
         } catch (error) {
             throw error;
         }
     }
     async destroy(id) {
         try {
-            let all = await fs.promises.readFile(this.path, "utf-8");
-            all = JSON.parse(all);
-            let product = all.find((each) => each.id === id);
+            let product = this.products.find((each) => each.id === id);
             if (product) {
-                let filtered = all.filter((each) => each.id !== id);
-                filtered = JSON.stringify(filtered, null, 2);
-                await fs.promises.writeFile(this.path, filtered);
+                this.products = this.products.filter((each) => each.id !== id);
             }
             return product;
         } catch (error) {
@@ -116,9 +85,5 @@ async function test() {
         console.log(error);
     }
 }
-
-const ProductManager = new ProductManager();
-export default ProductManager;
-
 
 //test();
