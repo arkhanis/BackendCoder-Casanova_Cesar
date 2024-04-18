@@ -5,7 +5,7 @@ import ProductManager from "./data/fs/products.fs.js";
 const app = express();
 
 //para inicialiazar la app de express necesito configurar:
-const port = 8083;
+const port = 8072;
 const ready = console.log("server ready on port " + port);
 
 //para inicializar el servidor

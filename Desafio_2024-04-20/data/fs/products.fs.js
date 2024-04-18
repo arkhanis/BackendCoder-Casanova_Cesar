@@ -106,7 +106,7 @@ async function test() {
         await products.create({ text: "my 6th product", category: "shirts" });
         await products.create({ text: "my 7th product", category: "shirts" });
         await products.create({ text: "my 8th product", category: "hats" });
-        await products.create({ text: "my 9th product", category: "hats"  });
+        await products.create({ text: "my 9th product", category: "hats" });
         const last = await products.create({ text: "my last product", category: "hats" });
         await products.read();
         await products.readOne(last.id);
@@ -117,8 +117,7 @@ async function test() {
     }
 }
 
-const ProductManager = new ProductManager();
+test();
+
+
 export default ProductManager;
-
-
-//test();
