@@ -1,9 +1,9 @@
 import fs from "fs";
 import crypto from "crypto";
 
-class NotesManager {
+class ProductManager {
     constructor() {
-        this.path = "./data/fs/files/notes.json";
+        this.path = "./data/fs/files/products.json";
         this.init();
     }
     init() {
@@ -25,7 +25,7 @@ class NotesManager {
             if (!data.text) {
                 throw new Error("Enter text!");
             } else {
-                const note = {
+                const product = {
                     id: crypto.randomBytes(12).toString("hex"),
                     text: data.text,
                     category: data.category || "to do",
@@ -33,10 +33,10 @@ class NotesManager {
                 };
                 let all = await fs.promises.readFile(this.path, "utf-8");
                 all = JSON.parse(all);
-                all.push(note);
+                all.push(product);
                 all = JSON.stringify(all, null, 2);
                 await fs.promises.writeFile(this.path, all);
-                return note;
+                return product;
             }
         } catch (error) {
             throw error;
@@ -56,8 +56,8 @@ class NotesManager {
         try {
             let all = await fs.promises.readFile(this.path, "utf-8");
             all = JSON.parse(all);
-            let note = all.find((each) => each.id === id);
-            return note;
+            let product = all.find((each) => each.id === id);
+            return product;
         } catch (error) {
             throw error;
         }
@@ -82,13 +82,13 @@ class NotesManager {
         try {
             let all = await fs.promises.readFile(this.path, "utf-8");
             all = JSON.parse(all);
-            let note = all.find((each) => each.id === id);
-            if (note) {
+            let product = all.find((each) => each.id === id);
+            if (product) {
                 let filtered = all.filter((each) => each.id !== id);
                 filtered = JSON.stringify(filtered, null, 2);
                 await fs.promises.writeFile(this.path, filtered);
             }
-            return note;
+            return product;
         } catch (error) {
             throw error;
         }
@@ -97,28 +97,25 @@ class NotesManager {
 
 async function test() {
     try {
-        const notes = new NotesManager();
-        await notes.create({ text: "my first note", category: "done" });
-        await notes.create({ text: "my 2nd note" });
-        await notes.create({ text: "my 3rd note" });
-        await notes.create({ text: "my 4th note" });
-        await notes.create({ text: "my 5th note", category: "done" });
-        await notes.create({ text: "my 6th note", category: "done" });
-        await notes.create({ text: "my 7th note", category: "done" });
-        await notes.create({ text: "my 8th note" });
-        await notes.create({ text: "my 9th note" });
-        const last = await notes.create({ text: "my last note" });
-        await notes.read();
-        await notes.readOne(last.id);
-        await notes.update(last.id, { category: "done" });
-        await notes.destroy(last.id);
+        const products = new ProductManager();
+        await products.create({ text: "my first product", category: "done" });
+        await products.create({ text: "my 2nd product" });
+        await products.create({ text: "my 3rd product" });
+        await products.create({ text: "my 4th product" });
+        await products.create({ text: "my 5th product", category: "done" });
+        await products.create({ text: "my 6th product", category: "done" });
+        await products.create({ text: "my 7th product", category: "done" });
+        await products.create({ text: "my 8th product" });
+        await products.create({ text: "my 9th product" });
+        const last = await products.create({ text: "my last product" });
+        await products.read();
+        await products.readOne(last.id);
+        await products.update(last.id, { category: "done" });
+        await products.destroy(last.id);
     } catch (error) {
         console.log(error);
     }
 }
-//test();
 
-const notesManager = new NotesManager();
-export default notesManager;
-
-//export { read, create, update, destroy }
+const ProductManager = new ProductManager();
+export default ProductManager;

@@ -1,12 +1,11 @@
 import express from "express";
-import notesManager from "./data/fs/notes.fs.js";
-//import { read, create, update, destroy } from "./data/fs/notes.fs.js"
+import ProductManager from "./data/fs/products.fs.js";
 
 //para crear una aplicacion/servidor de express
 const app = express();
 
 //para inicialiazar la app de express necesito configurar:
-const port = 8081;
+const port = 8083;
 const ready = console.log("server ready on port " + port);
 
 //para inicializar el servidor
@@ -18,16 +17,16 @@ app.use(express.urlencoded({ extended: true })); //para leer queries y params
 
 //para configurar solicitudes/peticiones
 app.get("/", index);
-app.post("/notes", create);
-app.get("/notes", read);
-app.get("/notes/:nid", readOne);
-app.put("/notes/:nid", update);
-app.delete("/notes/:nid", destroy);
+app.post("/products", create);
+app.get("/products", read);
+app.get("/products/:nid", readOne);
+app.put("/products/:nid", update);
+app.delete("/products/:nid", destroy);
 
 //para configurar las callbacks
 function index(req, res) {
     try {
-        const message = "Welcome to coder-notes";
+        const message = "Welcome to my Shop!";
         return res.json({ status: 200, response: message });
     } catch (error) {
         console.log(error);
@@ -35,10 +34,10 @@ function index(req, res) {
     }
 }
 async function create(req, res) {
-    /* logica necesaria para crear una nota */
+    /* logica necesaria para crear un producto */
     try {
         const data = req.body;
-        const one = await notesManager.create(data);
+        const one = await ProductManager.create(data);
         return res.json({ status: 201, response: one });
     } catch (error) {
         console.log(error);
@@ -51,7 +50,7 @@ async function create(req, res) {
 async function read(req, res) {
     try {
         const { category } = req.query;
-        const all = await notesManager.read(category);
+        const all = await ProductManager.read(category);
         //const all = await read()
         if (all.length > 0) {
             return res.json({ status: 200, response: all, category });
@@ -66,8 +65,7 @@ async function read(req, res) {
 async function readOne(req, res) {
     try {
         const { nid } = req.params;
-        const one = await notesManager.readOne(nid);
-        //const one = await readOne(nid)
+        const one = await ProductManager.readOne(nid);
         if (one) {
             return res.json({ status: 200, response: one });
         } else {
@@ -91,7 +89,7 @@ async function update(req, res) {
         /* capturar el objeto con las modificaciones */
         const data = req.body;
         /* actualizar el recurso */
-        const one = await notesManager.update(nid, data);
+        const one = await ProductManager.update(nid, data);
         //const one = await updateNote(nid,data)
         /* condicionar y enviar la respuesta al cliente */
         if (one) {
@@ -114,10 +112,10 @@ async function destroy(req, res) {
         /* capturar el id */
         const { nid } = req.params;
         /* buscar el recurso */
-        const one = await notesManager.readOne(iddd);
+        const one = await ProductManager.readOne(iddd);
         /* si existe lo elimino */
         if (one) {
-            await notesManager.destroy(nid);
+            await ProductManager.destroy(nid);
             return res.json({ status: 200, response: one });
         }
         const error = new Error("Not found!");
