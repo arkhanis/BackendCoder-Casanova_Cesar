@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./app.js",
-    "dev": "nodemon ./app.js",
+    "dev": "nodemon --ignore 'data/fs/files/products.json' ./app.js",
     "server": "nodemon ./app.js"
   },
   "keywords": [],

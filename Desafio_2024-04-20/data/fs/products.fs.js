@@ -28,7 +28,7 @@ class ProductManager {
                 const product = {
                     id: crypto.randomBytes(12).toString("hex"),
                     text: data.text,
-                    category: data.category || "to do",
+                    category: data.category || "w/category",
                     date: new Date(),
                 };
                 let all = await fs.promises.readFile(this.path, "utf-8");
@@ -117,7 +117,8 @@ async function test() {
     }
 }
 
-test();
+await test();
+
 
 
 export default ProductManager;
