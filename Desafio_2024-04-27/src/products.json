@@ -1,0 +1,16 @@
+[
+    {
+        "title": "Nuevo Producto",
+        "description": "Descripción actualizada del producto - test",
+        "code": "NP001",
+        "price": 45.99,
+        "status": true,
+        "stock": 75,
+        "category": "Categoría Ejemplo",
+        "thumbnails": [
+            "http://ejemplo.com/imagen1.jpg",
+            "http://ejemplo.com/imagen2.jpg"
+        ],
+        "id": 1
+    }
+]
