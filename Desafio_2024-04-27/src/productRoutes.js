@@ -4,7 +4,7 @@ import ProductManager from './productManager.js';
 const router = express.Router();
 const productManager = new ProductManager('./src/products.json');
 
-// Lista todos los productos
+// Obtiene todos los productos
 router.get('/', async (req, res) => {
     let { limit } = req.query;
     try {
@@ -34,7 +34,7 @@ router.get('/:pid', async (req, res) => {
     }
 });
 
-// Añadir un nuevo producto
+// Crea un nuevo producto
 router.post('/', async (req, res) => {
     try {
         const product = {
@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Actualizar un producto existente
+// Actualiza un producto
 router.put('/:pid', async (req, res) => {
     const id = parseInt(req.params.pid);
     try {

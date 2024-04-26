@@ -1,15 +1,15 @@
 [
     {
-        "title": "Nuevo Producto",
-        "description": "Descripción actualizada del producto - test",
-        "code": "NP001",
-        "price": 45.99,
+        "title": "Producto 1",
+        "description": "Descripción 1",
+        "code": "AA001",
+        "price": 25.00,
         "status": true,
         "stock": 75,
-        "category": "Categoría Ejemplo",
+        "category": "Categoría test",
         "thumbnails": [
-            "http://ejemplo.com/imagen1.jpg",
-            "http://ejemplo.com/imagen2.jpg"
+            "http://google.com/imagen1.jpg",
+            "http://google.com/imagen2.jpg"
         ],
         "id": 1
     }

@@ -4,6 +4,7 @@ import { CartManager } from './CartManager.js';
 const router = express.Router();
 const cartManager = new CartManager();
 
+// Crea un nuevo carrito
 router.post('/', (req, res) => {
     try {
         const cartId = cartManager.createCart();
@@ -13,6 +14,7 @@ router.post('/', (req, res) => {
     }
 });
 
+// Obtiene los productos de un carrito
 router.get('/:cid', (req, res) => {
     try {
         const products = cartManager.getProductsInCart(parseInt(req.params.cid));
@@ -22,6 +24,7 @@ router.get('/:cid', (req, res) => {
     }
 });
 
+// Añade un producto al carrito
 router.post('/:cid/product/:pid', (req, res) => {
     try {
         cartManager.addProductToCart(parseInt(req.params.cid), parseInt(req.params.pid));

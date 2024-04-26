@@ -2,16 +2,17 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const fileName = fileURLToPath(import.meta.url);
+const dirName = path.dirname(fileName);
 
 export class CartManager {
     constructor() {
-        this.filePath = path.join(__dirname, 'carts.json');
+        this.filePath = path.join(dirName, 'carts.json');
         this.carts = this.readCartsFromFile();
         this.nextCartId = Object.keys(this.carts).length + 1;
     }
 
+    // Métodos leer el archivo de carritos
     readCartsFromFile() {
         try {
             const data = fs.readFileSync(this.filePath, 'utf-8');
@@ -21,10 +22,12 @@ export class CartManager {
         }
     }
 
+    // Método para escribir los carritos en el archivo
     writeCartsToFile() {
         fs.writeFileSync(this.filePath, JSON.stringify(this.carts, null, 2), 'utf-8');
     }
 
+    // Métodos para crear el carrito
     createCart() {
         const cartId = this.nextCartId++;
         this.carts[cartId] = { id: cartId, products: [] };
@@ -32,6 +35,7 @@ export class CartManager {
         return cartId;
     }
 
+    // Métodos para añadir productos al carrito
     addProductToCart(cartId, productId, quantity = 1) {
         const cart = this.carts[cartId];
         if (!cart) {
@@ -46,6 +50,7 @@ export class CartManager {
         this.writeCartsToFile();
     }
 
+    // Método para obtener un producto en el carrito
     getProductsInCart(cartId) {
         const cart = this.carts[cartId];
         if (!cart) {

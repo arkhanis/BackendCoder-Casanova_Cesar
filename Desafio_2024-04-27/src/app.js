@@ -5,7 +5,8 @@ import cartRoutes from './cartRoutes.js';
 const app = express();
 const PORT = 8080;
 
-app.use(express.json()); // Middleware para parsear JSON
+// Middleware para parsear el body de las requests
+app.use(express.json()); 
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
 

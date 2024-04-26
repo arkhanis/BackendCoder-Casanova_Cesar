@@ -12,6 +12,7 @@ class ProductManager {
         this.nextProductId = this.products.length > 0 ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
     }
 
+    // Métodos para leer y escribir el archivo de productos
     async readJSONFile() {
         try {
             const data = await fs.readFile(this.path, 'utf8');
@@ -22,6 +23,7 @@ class ProductManager {
         }
     }
 
+    // Método para escribir en el archivo
     async writeJSONFile() {
         try {
             await fs.writeFile(this.path, JSON.stringify(this.products, null, 2), 'utf8');
@@ -30,7 +32,9 @@ class ProductManager {
         }
     }
 
+    // Métodos para agregar, obtener, actualizar y eliminar productos
     async addProduct(product) {
+        
         // Asegurarte de que todos los campos obligatorios estén presentes
         if (!product.title || !product.description || !product.price || !product.thumbnails || !product.code || product.stock == null || product.status == null || !product.category) {
             console.log("Error: Todos los campos son obligatorios.");
@@ -50,16 +54,18 @@ class ProductManager {
         console.log(`Producto ${product.title} agregado con éxito.`);
     }
 
-
+    // Método para obtener todos los productos
     getProducts() {
         return this.products;
     }
 
+    // Método para obtener un producto por ID
     getProductById(id) {
         const product = this.products.find(p => p.id === id);
         return product || null;
     }
 
+    // Método para obtener un producto por código
     async updateProduct(id, updatedProduct) {
         const productIndex = this.products.findIndex(p => p.id === id);
         if (productIndex !== -1) {
@@ -71,6 +77,7 @@ class ProductManager {
         }
     }
 
+    // Método para eliminar un producto por ID
     async deleteProduct(id) {
         const productIndex = this.products.findIndex(p => p.id === id);
         if (productIndex !== -1) {
